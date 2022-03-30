@@ -1,8 +1,10 @@
-import { TestBed } from '@angular/core/testing';
+import { TestBed, waitForAsync } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AppComponent } from './app.component';
 
 describe('AppComponent', () => {
+  let fixture: any;
+  let app: any;
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [
@@ -14,22 +16,19 @@ describe('AppComponent', () => {
     }).compileComponents();
   });
 
-  it('should create the app', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.componentInstance;
-    expect(app).toBeTruthy();
+  // Wrapping this code in before each causes the warning
+  beforeEach(() => {
+    fixture = TestBed.createComponent(AppComponent);
+    app = fixture.componentInstance
   });
 
-  it(`should have as title 'angular'`, () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.componentInstance;
+  // Only occurs with test cases using waitForAsync()
+  it(`should have as title 'angular'`, waitForAsync(() => {
+
+    // If this code is used instead of the beforeEach the warning disappears
+    // fixture = TestBed.createComponent(AppComponent);
+    // app = fixture.componentInstance
+
     expect(app.title).toEqual('angular');
-  });
-
-  it('should render title', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    fixture.detectChanges();
-    const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('.content span')?.textContent).toContain('angular app is running!');
-  });
+  }));
 });
